@@ -28,11 +28,16 @@ public class VagaService {
 	
 	@Transactional(readOnly = true)
 	public VagaDTO findById(Long id) {
-		Vaga result = vagaRepository.findById(id).get();
+		Vaga vaga = vagaRepository.findById(id).get();
+				
+		return new VagaDTO(vaga);
+	}
+	
+	@Transactional(readOnly = true) 
+	public VagaDTO findByEmail(Integer codigo) {
+		Vaga vaga = vagaRepository.findByCodigo(codigo);
 		
-		VagaDTO dto = new VagaDTO(result);
-		
-		return dto;
+		return new VagaDTO(vaga);
 	}
 
 }

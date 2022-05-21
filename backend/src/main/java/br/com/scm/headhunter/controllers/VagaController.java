@@ -23,8 +23,14 @@ public class VagaController {
 		return vagaService.findAll(pageable);
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/id/{id}")
 	public VagaDTO findById(@PathVariable Long id) {
 		return vagaService.findById(id);
 	}
+	
+	@GetMapping(value = "/codigo/{codigo}")
+	public VagaDTO findById(@PathVariable Integer codigo) {
+		return vagaService.findByEmail(codigo);
+	}
+
 }

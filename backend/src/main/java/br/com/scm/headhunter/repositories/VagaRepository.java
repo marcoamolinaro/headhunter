@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.scm.headhunter.entities.Vaga;
 
 public interface VagaRepository extends JpaRepository<Vaga, Long> {
-
+	
+	Vaga findByCodigo(Integer codigo);
 }
