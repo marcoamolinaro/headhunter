@@ -7,4 +7,6 @@ import br.com.scm.headhunter.entities.Vaga;
 public interface VagaRepository extends JpaRepository<Vaga, Long> {
 	
 	Vaga findByCodigo(Integer codigo);
+	
+	void deleteByCodigo(Integer codigo);
 }

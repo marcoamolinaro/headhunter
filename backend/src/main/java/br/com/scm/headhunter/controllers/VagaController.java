@@ -3,6 +3,7 @@ package br.com.scm.headhunter.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,18 @@ public class VagaController {
 	}
 	
 	@GetMapping(value = "/codigo/{codigo}")
-	public VagaDTO findById(@PathVariable Integer codigo) {
-		return vagaService.findByEmail(codigo);
+	public VagaDTO findByCodigo(@PathVariable Integer codigo) {
+		return vagaService.findByCodigo(codigo);
+	}
+
+	@DeleteMapping(value = "/codigo/{codigo}")
+	public void deleteByCodigo(@PathVariable Integer codigo) {
+		vagaService.deleteByCodigo(codigo);
+	}
+
+	@DeleteMapping(value = "/id/{id}")
+	public void deleteById(@PathVariable Long id) {
+		vagaService.deleteById(id);
 	}
 
 }

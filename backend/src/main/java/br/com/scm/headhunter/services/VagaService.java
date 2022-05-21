@@ -40,7 +40,7 @@ public class VagaService {
 	}
 	
 	@Transactional(readOnly = true) 
-	public VagaDTO findByEmail(Integer codigo) {
+	public VagaDTO findByCodigo(Integer codigo) {
 		try {
 			Vaga vaga = vagaRepository.findByCodigo(codigo);
 			
@@ -48,6 +48,22 @@ public class VagaService {
 			
 		} catch (Exception e) {
 			throw new ObjectNotFoundException("Vaga com código: " + codigo + " não encontrada.");
+		}
+	}
+	
+	@Transactional
+	public void deleteByCodigo(Integer codigo) {
+		findByCodigo(codigo);
+		
+		vagaRepository.deleteByCodigo(codigo);
+	}
+
+	@Transactional
+	public void deleteById(Long id) {	
+		try {
+			vagaRepository.deleteById(id);		
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Vaga com id: " + id + " não encontrada.");
 		}
 	}
 
