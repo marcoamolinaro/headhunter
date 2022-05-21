@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.scm.headhunter.dto.VagaDTO;
 import br.com.scm.headhunter.entities.Vaga;
 import br.com.scm.headhunter.repositories.VagaRepository;
+import br.com.scm.headhunter.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class VagaService {
@@ -28,16 +29,26 @@ public class VagaService {
 	
 	@Transactional(readOnly = true)
 	public VagaDTO findById(Long id) {
-		Vaga vaga = vagaRepository.findById(id).get();
-				
-		return new VagaDTO(vaga);
+		try {
+			Vaga vaga = vagaRepository.findById(id).get();
+					
+			return new VagaDTO(vaga);
+		
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Vaga com id: " + id + " não encontrada.");
+		}
 	}
 	
 	@Transactional(readOnly = true) 
 	public VagaDTO findByEmail(Integer codigo) {
-		Vaga vaga = vagaRepository.findByCodigo(codigo);
-		
-		return new VagaDTO(vaga);
+		try {
+			Vaga vaga = vagaRepository.findByCodigo(codigo);
+			
+			return new VagaDTO(vaga);
+			
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Vaga com código: " + codigo + " não encontrada.");
+		}
 	}
 
 }
