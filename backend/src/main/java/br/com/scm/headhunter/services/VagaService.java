@@ -1,6 +1,5 @@
 package br.com.scm.headhunter.services;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,15 +73,7 @@ public class VagaService {
 		VagaDTO newDTO = null;
 		
 		try {
-			Vaga vagaNew = new Vaga();
-			vagaNew.setCodigo(dto.getCodigo());
-			vagaNew.setData(dto.getData());
-			vagaNew.setDescricao(dto.getDescricao());
-			vagaNew.setLink(dto.getLink());
-			vagaNew.setNacInt(dto.getNacInt());
-			vagaNew.setRemota(dto.getRemota());
-			vagaNew.setStatus(dto.getStatus());
-			vagaNew.setTitulo(dto.getTitulo());
+			Vaga vagaNew = saveVaga(dto);
 			
 			Vaga vaga = vagaRepository.saveAndFlush(vagaNew);
 			
@@ -94,6 +85,69 @@ public class VagaService {
 		}
 		
 		return newDTO;			
+	}
+
+	
+	@Transactional
+	public VagaDTO update(VagaDTO dto) {
+		VagaDTO vagaDTO = null;
+		try {
+			Vaga vaga = vagaRepository.findByCodigo(dto.getCodigo());
+			
+			updateVaga(dto, vaga);
+			
+			vagaRepository.saveAndFlush(vaga);
+			
+			vagaDTO = new VagaDTO(vaga);
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Vaga com código: " + dto.getCodigo() + " não encontrada.");
+		}
+		
+		return vagaDTO;
+	}
+	
+	@Transactional
+	public VagaDTO updateStatus(VagaDTO dto) {
+		VagaDTO vagaDTO = null;
+		try {
+			Vaga vaga = vagaRepository.findByCodigo(dto.getCodigo());
+			
+			updateVaga(dto, vaga);
+			
+			vagaRepository.saveAndFlush(vaga);
+						
+			vagaDTO = new VagaDTO(vaga);
+		} catch (Exception e) {
+			throw new ObjectNotFoundException("Vaga com código: " + dto.getCodigo() + " não encontrada.");
+		}
+		
+		return vagaDTO;
+	}
+
+
+	private Vaga saveVaga(VagaDTO dto) {
+		Vaga vagaNew = new Vaga();
+		vagaNew.setCodigo(dto.getCodigo());
+		vagaNew.setData(dto.getData());
+		vagaNew.setDescricao(dto.getDescricao());
+		vagaNew.setLink(dto.getLink());
+		vagaNew.setNacInt(dto.getNacInt());
+		vagaNew.setRemota(dto.getRemota());
+		vagaNew.setStatus(dto.getStatus());
+		vagaNew.setTitulo(dto.getTitulo());
+		return vagaNew;
+	}
+	
+	private void updateVaga(VagaDTO dto, Vaga vaga) {
+		vaga.setId(dto.getId());
+		vaga.setCodigo(dto.getCodigo());
+		vaga.setData(dto.getData());
+		vaga.setDescricao(dto.getDescricao());
+		vaga.setLink(dto.getLink());
+		vaga.setNacInt(dto.getNacInt());
+		vaga.setRemota(dto.getRemota());
+		vaga.setStatus(dto.getStatus());
+		vaga.setTitulo(dto.getTitulo());
 	}
 
 }
